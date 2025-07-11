@@ -1,3 +1,4 @@
+#![allow(unexpected_cfgs)]
 use anchor_lang::prelude::*;
 
 declare_id!("3WeCKRYnyebodD1Hh3t6Gszcvjq1m9iQJ2a5kgFwFRbq");
@@ -8,6 +9,9 @@ pub mod swap_token_program {
 
     pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
         msg!("Greetings from: {:?}", ctx.program_id);
+
+        let _raydium_program_id = raydium_cpmm_cpi::ID;
+
         Ok(())
     }
 }

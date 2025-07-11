@@ -14,9 +14,34 @@ cpi = ["no-entrypoint"]
 no-entrypoint = []
 no-idl = []
 no-log-ix-name = []
-idl-build = ["anchor-lang/idl-build"]
-
+idl-build = ["anchor-lang/idl-build", "anchor-spl/idl-build"]
 
 [dependencies]
-anchor-lang = "0.31.1"
+# anyhow = "1.0.97"
+# thiserror = "2"
 
+const_format = { version = "0.2.34" }
+derive_more = { version = "2.0.1", features = ["full"] }
+dotenv = "0.15.0"
+lazy_static = "1.5"
+
+itertools = "0.14.0"
+wait = "0.2.6"
+# smol = "2.0.2" # unsupported btw
+
+chrono = { version = "0.4.40", features = ["serde"] }
+smallvec = { version = "1.15.1", features = ["arbitrary", "serde"] }
+smol_str = { version = "0.3.2" }
+
+# anchor-lang = "0.31.1"
+# anchor-spl = "0.31.1"
+
+anchor-lang = "=0.31.0"
+anchor-spl = "=0.31.0"
+raydium-cpmm-cpi = { git = "https://github.com/raydium-io/raydium-cpi", package = "raydium-cpmm-cpi" }
+
+# raydium-amm-cpi = { git = "https://github.com/raydium-io/raydium-cpi", package = "raydium-amm-cpi" }
+# # requiered by raydium-cpmm-cpi
+# anchor-lang = "=0.31.0"
+# # requiered by raydium-cpmm-cpi
+# anchor-spl = "=0.31.0"
