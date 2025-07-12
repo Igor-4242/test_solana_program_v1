@@ -36,8 +36,10 @@ smol_str = { version = "0.3.2" }
 # anchor-lang = "0.31.1"
 # anchor-spl = "0.31.1"
 
-anchor-lang = "=0.31.0"
-anchor-spl = "=0.31.0"
+# https://github.com/MeteoraAg/cpi-examples/blob/main/programs/cpi-example/src/instructions/dlmm_cpi/swap.rs
+
+anchor-lang = { version = "=0.31.0", features = ["idl-build"] }
+anchor-spl = { version = "=0.31.0", features = ["idl-build"] }
 raydium-cpmm-cpi = { git = "https://github.com/raydium-io/raydium-cpi", package = "raydium-cpmm-cpi" }
 
 # raydium-amm-cpi = { git = "https://github.com/raydium-io/raydium-cpi", package = "raydium-amm-cpi" }

@@ -1,6 +1,9 @@
 #![allow(unexpected_cfgs)]
 use anchor_lang::prelude::*;
 
+mod dexes;
+declare_program!(dlmm);
+
 declare_id!("3WeCKRYnyebodD1Hh3t6Gszcvjq1m9iQJ2a5kgFwFRbq");
 
 #[program]
