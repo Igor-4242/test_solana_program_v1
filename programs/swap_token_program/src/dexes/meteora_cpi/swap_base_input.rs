@@ -1,8 +1,10 @@
-use crate::dlmm;
+// stolen from: https://github.com/MeteoraAg/cpi-examples/blob/main/programs/cpi-example/src/instructions/dlmm_cpi/swap.rs
+// use crate::dexes::common;
+use crate::meteora_dlmm;
 use anchor_lang::prelude::*;
 
 #[derive(Accounts)]
-pub struct DlmmSwap<'info> {
+pub struct SwapBaseInput<'info> {
     #[account(mut)]
     /// CHECK: The pool account
     pub lb_pair: UncheckedAccount<'info>,
@@ -40,7 +42,7 @@ pub struct DlmmSwap<'info> {
     /// CHECK: User who's executing the swap
     pub user: Signer<'info>,
 
-    #[account(address = dlmm::ID)]
+    #[account(address = meteora_dlmm::ID)]
     /// CHECK: DLMM program
     pub dlmm_program: UncheckedAccount<'info>,
 
@@ -54,6 +56,43 @@ pub struct DlmmSwap<'info> {
     // Bin arrays need to be passed using remaining accounts
 }
 
+// #[error_code]
+// pub enum ErrorCode {
+//     #[msg("Invalid input account number")]
+//     InvalidInputAccountNumber,
+//     #[msg("Generick")]
+//     Generick,
+// }
+
+// impl<'info> TryFrom<common::SwapBaseInput<'info>> for SwapBaseInput<'info> {
+//     type Error = ErrorCode;
+//     fn try_from(value: common::SwapBaseInput<'info>) -> std::result::Result<Self, Self::Error> {
+//         Ok(SwapBaseInput {
+//             lb_pair: UncheckedAccount::try_from(&value.pool),
+//             bin_array_bitmap_extension: None,
+//             reserve_x: UncheckedAccount::try_from(&value.input_vault.to_account_info()),
+//             reserve_y: UncheckedAccount::try_from(&value.output_vault.to_account_info()),
+//             user_token_in: UncheckedAccount::try_from(&value.input_token_account.to_account_info()),
+//             user_token_out: UncheckedAccount::try_from(
+//                 &value.output_token_account.to_account_info(),
+//             ),
+//             token_x_mint: UncheckedAccount::try_from(&value.input_token_mint.to_account_info()),
+//             token_y_mint: UncheckedAccount::try_from(&value.output_token_mint.to_account_info()),
+//             oracle: UncheckedAccount::try_from(&value.pool),
+//             host_fee_in: None,
+//             user: value.user,
+//             dlmm_program: UncheckedAccount::try_from(&value.pool.to_account_info()),
+//             event_authority: UncheckedAccount::try_from(&value.pool.to_account_info()),
+//             token_x_program: UncheckedAccount::try_from(
+//                 &value.input_token_program.to_account_info(),
+//             ),
+//             token_y_program: UncheckedAccount::try_from(
+//                 &value.output_token_program.to_account_info(),
+//             ),
+//         })
+//     }
+// }
+
 /// Executes a DLMM swap
 ///
 /// # Arguments
@@ -65,12 +104,12 @@ pub struct DlmmSwap<'info> {
 /// # Returns
 ///
 /// Returns a `Result` indicating success or failure.
-pub fn handle_dlmm_swap<'a, 'b, 'c, 'info>(
-    ctx: Context<'a, 'b, 'c, 'info, DlmmSwap<'info>>,
+pub fn swap_base_input<'a, 'b, 'c, 'info>(
+    ctx: Context<'a, 'b, 'c, 'info, SwapBaseInput<'info>>,
     amount_in: u64,
     min_amount_out: u64,
 ) -> Result<()> {
-    let accounts = dlmm::cpi::accounts::Swap {
+    let accounts = meteora_dlmm::cpi::accounts::Swap {
         lb_pair: ctx.accounts.lb_pair.to_account_info(),
         bin_array_bitmap_extension: ctx
             .accounts
@@ -98,5 +137,5 @@ pub fn handle_dlmm_swap<'a, 'b, 'c, 'info>(
 
     let cpi_context = CpiContext::new(ctx.accounts.dlmm_program.to_account_info(), accounts)
         .with_remaining_accounts(ctx.remaining_accounts.to_vec());
-    dlmm::cpi::swap(cpi_context, amount_in, min_amount_out)
+    meteora_dlmm::cpi::swap(cpi_context, amount_in, min_amount_out)
 }

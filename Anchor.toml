@@ -6,6 +6,7 @@ package_manager = "yarn"
 [features]
 resolution = true
 skip-lint = false
+idl = true
 idl-build = ["anchor-spl/idl-build"]
 
 [programs.localnet]
